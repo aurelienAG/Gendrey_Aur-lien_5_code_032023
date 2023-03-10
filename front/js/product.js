@@ -16,5 +16,24 @@ getProduct
  displayPrice.innerHTML = currentProduct.price; 
  displayDescription.innerHTML = currentProduct.description;
  
+ //Affichage des options de personnalisation 
+ const selectOption = document.querySelector("#colors");
+ let optionArray = currentProduct.colors; 
+
+const displayOption = () => {
+    const optionsNode = optionArray.map(color => {
+        return createOptionElement(color);
+        
+    }); 
+    selectOption.innerHTML = ""; 
+    selectOption.append(...optionsNode);
+};
+
+const createOptionElement = color => {
+    const option = document.createElement("option"); 
+    option.innerHTML = color; 
+    return option; 
+}; 
+displayOption();
  
 });
