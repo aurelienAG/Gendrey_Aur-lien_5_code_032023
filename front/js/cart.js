@@ -28,3 +28,52 @@ for (let i = 0 ; i < cartInLs.length ; i++){
 </article>`
 displayCart.innerHTML = productBloc;
 };
+
+const totalPrice = document.querySelector("#totalPrice"); 
+const totalQuantity = document.querySelector("#totalQuantity")
+let prices = document.getElementsByClassName("unitPrice"); 
+let quantities = document.getElementsByClassName("itemQuantity"); 
+
+  for ( let i = 0; i < quantities.length; i++){
+    let qty = quantities[i] 
+    qty.addEventListener("click", event => {
+    event.preventDefault(); 
+      let theLs =  cartInLs;  
+      let storageValue = cartInLs[i].quantity; 
+      let newValue = parseInt(qty.value);
+      newValue != storageValue ?  theLs[i].quantity = newValue : console.log("foo");
+      localStorage.setItem("cart", JSON.stringify(theLs));
+ sumTotal(); 
+}) 
+}
+
+function sumTotal(){ 
+
+  let pricesArray = []; 
+  let quantitiesArray = []; 
+  
+  for (let i = 0 ; i < prices.length && quantities.length ; i++){
+  let allPrices = parseInt(prices[i].innerText);
+  let allQuantities = parseInt(quantities[i].value); 
+  let finalsPrices = allQuantities * allPrices;   
+  
+  pricesArray.push(finalsPrices); 
+  let initialValue = 0;
+   const sumPrices = pricesArray.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    initialValue 
+   );
+   totalPrice.innerText = sumPrices; 
+   
+  quantitiesArray.push(allQuantities); 
+  let initialValue2 = 0; 
+  const sumQuantities = quantitiesArray.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    initialValue2 
+   ); 
+   totalQuantity.innerText = sumQuantities; 
+  
+  } 
+};
+
+sumTotal();
