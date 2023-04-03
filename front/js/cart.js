@@ -76,4 +76,21 @@ function sumTotal(){
   } 
 };
 
-sumTotal();
+sumTotal(); 
+
+var deleteBtn = document.getElementsByClassName("deleteItem"); 
+var itemCard = document.getElementsByClassName("cart__item"); 
+
+  for(let i = 0 ; i < deleteBtn.length && cartInLs.length && itemCard.length; i++){
+  let btn = deleteBtn[i];
+  let removeDom = itemCard[i];
+  btn.addEventListener("click", event => {
+    event.preventDefault(); 
+   cartInLs.splice(i, 1); 
+   removeDom.remove();
+   localStorage.setItem("cart", JSON.stringify(cartInLs));
+  sumTotal(); 
+  cartInLs.length < 1 || 0 ? totalQuantity.innerText = "" && localStorage.clear(): console.log("bar");  
+  cartInLs.length < 1 || 0 ? totalPrice.innerText = "" && localStorage.clear(): console.log("foo");  
+  });
+  }; 
