@@ -94,3 +94,88 @@ var itemCard = document.getElementsByClassName("cart__item");
   cartInLs.length < 1 || 0 ? totalPrice.innerText = "" && localStorage.clear(): console.log("foo");  
   });
   }; 
+
+  // validation et envoi du formulaire
+
+ let firstNameInput = document.querySelector("#firstName");
+ console.log(firstNameInput);
+ let lastNameInput = document.querySelector("#lastName");
+ console.log(lastNameInput);
+ let addressInput = document.querySelector("#address");
+ console.log(addressInput);
+ let cityInput = document.querySelector("#city");
+ console.log(cityInput); 
+ let emailInput = document.querySelector("#email");
+ console.log(emailInput); 
+
+ const submitBtn = document.querySelector("#order"); 
+    
+     submitBtn.addEventListener("click", event => {
+      event.preventDefault(); 
+     
+      const firstName = firstNameInput.value; 
+      const lastName = lastNameInput.value; 
+      const address = addressInput.value; 
+      const city = cityInput.value; 
+      const email = emailInput.value; 
+     
+      const contact = {
+        firstName: firstName, 
+        lastName: lastName, 
+        address: address, 
+        city: city, 
+        email: email 
+      }; 
+
+      console.log(contact);
+        let regExAddress = new RegExp('[a-zA-Z0-9\s\,\\-]*', 'g');
+        let regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
+        let regExNames = new RegExp('^[a-zA-Z\é\è\ê\-]{2,30}', 'g');
+        let testNames = regExNames.test(firstName && lastName && city); 
+        let testAddress = regExAddress.test(address);
+        let testEmail = regExEmail.test(email);
+        
+        let productsIds = []; 
+         for (let i = 0; i < cartInLs.length ; i++){
+          productsIds.push(cartInLs[i].id); 
+          console.log(productsIds);
+         }
+
+        if (testNames && testAddress && testEmail === true )
+        {
+          const sendToBackEnd = {
+            contact, 
+            products: productsIds
+          }
+          console.log(sendToBackEnd);
+          const options = {
+  
+            method: "POST",
+            body: JSON.stringify(sendToBackEnd),
+            headers: {
+              "Content-Type": "application/json" 
+            }, 
+            };
+            
+            const postRequest = fetch("http://localhost:3000/api/products/order",options);
+               postRequest.then(async(response)=>{
+                 try{
+            console.log(response); 
+            const backEndResponse = await response.json(); 
+            localStorage.clear();
+            localStorage.setItem("order_id",JSON.stringify(backEndResponse.orderId));
+            window.location.href = "confirmation.html";
+            
+                 }catch(e){
+                   console.log(e);
+                 }
+               })
+          
+        } 
+        else {
+          console.log("ne pas envoyer le formulaire")
+        };
+
+      } 
+      
+    ) 
