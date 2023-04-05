@@ -36,7 +36,7 @@ let quantities = document.getElementsByClassName("itemQuantity");
 
   for ( let i = 0; i < quantities.length; i++){
     let qty = quantities[i] 
-    qty.addEventListener("click", event => {
+    qty.addEventListener("change", event => {
     event.preventDefault(); 
       let theLs =  cartInLs;  
       let storageValue = cartInLs[i].quantity; 
@@ -80,18 +80,21 @@ sumTotal();
 
 var deleteBtn = document.getElementsByClassName("deleteItem"); 
 var itemCard = document.getElementsByClassName("cart__item"); 
-
+function clearQuantityAndPrice(){
+  totalQuantity.innerText = "";
+  totalPrice.innerText = "";
+};
   for(let i = 0 ; i < deleteBtn.length && cartInLs.length && itemCard.length; i++){
   let btn = deleteBtn[i];
   let removeDom = itemCard[i];
+  
   btn.addEventListener("click", event => {
     event.preventDefault(); 
-   cartInLs.splice(i, 1); 
+   cartInLs.splice(removeDom, 1); 
    removeDom.remove();
    localStorage.setItem("cart", JSON.stringify(cartInLs));
   sumTotal(); 
-  cartInLs.length < 1 || 0 ? totalQuantity.innerText = "" && localStorage.clear(): console.log("bar");  
-  cartInLs.length < 1 || 0 ? totalPrice.innerText = "" && localStorage.clear(): console.log("foo");  
+  cartInLs.length === 0 ? clearQuantityAndPrice() && localStorage.clear(): console.log(cartInLs.length);  
   });
   }; 
 
