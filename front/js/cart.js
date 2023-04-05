@@ -86,12 +86,12 @@ function clearQuantityAndPrice(){
 };
   for(let i = 0 ; i < deleteBtn.length && cartInLs.length && itemCard.length; i++){
   let btn = deleteBtn[i];
-  let removeDom = itemCard[i];
+  let itemTargeted= itemCard[i];
   
   btn.addEventListener("click", event => {
     event.preventDefault(); 
-   cartInLs.splice(removeDom, 1); 
-   removeDom.remove();
+   cartInLs.splice(itemTargeted, 1); 
+   itemTargeted.remove();
    localStorage.setItem("cart", JSON.stringify(cartInLs));
   sumTotal(); 
   cartInLs.length === 0 ? clearQuantityAndPrice() && localStorage.clear(): console.log(cartInLs.length);  
