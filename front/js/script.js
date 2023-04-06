@@ -13,7 +13,7 @@ getItems
     
     items.map (item => item = `
     
-          <a href="product.html?+=${item._id}">
+          <a href="product.html?id=${item._id}">
             <article>
                <img src="${item.imageUrl}" alt="Lorem ipsum dolor sit amet, Kanap name1"/>
           <h3>${item.name}</h3>

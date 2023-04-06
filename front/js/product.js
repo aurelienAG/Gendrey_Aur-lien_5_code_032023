@@ -1,4 +1,6 @@
-var id = window.location.search.substring(3); 
+let url = new URLSearchParams(document.location.search); 
+let id = url.get("id"); 
+console.log(id);
 
 const getProduct = fetch(`http://localhost:3000/api/products/${id}`); 
 getProduct
@@ -36,9 +38,11 @@ const createOptionElement = color => {
 }; 
 displayOption();
 
+
+
 // Local Storage
 function product(){
-    let quantity = parseInt(document.querySelector("#quantity").value);
+    let quantity = parseInt(document.querySelector("#quantity").value); 
     let item = {
         id: currentProduct._id,
         image: currentProduct.imageUrl, 
@@ -63,7 +67,8 @@ function product(){
      }
     };  
 
-    function addToCart(){
+    function addToCart(){ 
+      
         let productSelected = product(); 
          let cart = getCart(); 
          let foundedConditions = cart
@@ -72,14 +77,18 @@ function product(){
          foundedConditions.quantity = foundedConditions.quantity + productSelected.quantity 
          : cart.push(productSelected);       
          saveLocalStorage(cart);
-     };
+        };
+         
+  
 
 //bouton d'ajout au panier
 let btnAdd = document.querySelector("#addToCart"); 
+
 
 btnAdd.addEventListener('click', (event) =>{
     event.preventDefault();
 addToCart();
 });    
+
 
 });
