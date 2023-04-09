@@ -35,7 +35,9 @@ let prices = document.getElementsByClassName("unitPrice");
 let quantities = document.getElementsByClassName("itemQuantity"); 
 
   for ( let i = 0; i < quantities.length; i++){
-    let qty = quantities[i] 
+    let qty = quantities[i]; 
+    
+   
     qty.addEventListener("change", event => {
     event.preventDefault(); 
       let theLs =  cartInLs;  
@@ -144,7 +146,10 @@ function clearQuantityAndPrice(){
           console.log(productsIds);
          }
 
-        if (testNames && testAddress && testEmail === true )
+        if (testNames && testAddress && testEmail === false)
+        {
+          console.log("ne pas envoyer le formulaire")
+        } else
         {
           const sendToBackEnd = {
             contact, 
@@ -174,9 +179,6 @@ function clearQuantityAndPrice(){
                  }
                })
           
-        } 
-        else {
-          console.log("ne pas envoyer le formulaire")
         };
 
       } 

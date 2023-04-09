@@ -4,3 +4,5 @@ const displayOrderId = document.querySelector("#orderId");
 console.log(displayOrderId); 
 
 displayOrderId.innerText = orderId;
+
+localStorage.clear();
