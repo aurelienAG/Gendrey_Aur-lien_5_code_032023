@@ -100,18 +100,48 @@ function clearQuantityAndPrice(){
   });
   }; 
 
-  // validation et envoi du formulaire
+  // validation du formulaire
 
- let firstNameInput = document.querySelector("#firstName");
- console.log(firstNameInput);
- let lastNameInput = document.querySelector("#lastName");
- console.log(lastNameInput);
- let addressInput = document.querySelector("#address");
- console.log(addressInput);
- let cityInput = document.querySelector("#city");
- console.log(cityInput); 
- let emailInput = document.querySelector("#email");
- console.log(emailInput); 
+
+ let lastName = document.querySelector("#lastName").value;
+ console.log(lastName);
+ let address = document.querySelector("#address").value;
+ console.log(address);
+ let city = document.querySelector("#city").value;
+ console.log(city); 
+ let email = document.querySelector("#email").value;
+ console.log(email); 
+
+ let regExAddress = new RegExp('[a-zA-Z0-9\s\,\\-]*', 'g');
+ let regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
+ 
+ let regExLastName = new RegExp('^[a-zA-Z\é\è\ê\-]{2,30}', 'g');
+ let regExCity = new RegExp('^[a-zA-Z\é\è\ê\-]{2,30}', 'g');
+ 
+ 
+ let testLastName = regExLastName.test(lastName);  
+ let testCity = regExCity.test(city);
+ let testAddress = regExAddress.test(address);
+ let testEmail = regExEmail.test(email);
+
+ let userForm = document.querySelector(".cart__order__form");
+ console.log(userForm);
+
+ let firstName = document.querySelector("#firstName");
+ console.log(firstName);
+
+ userForm.firstName.addEventListener("change", event => {
+  event.preventDefault();
+  let regExFirstName = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g');
+  let nameValue = firstName.value;
+  let testFirstName = regExFirstName.test(nameValue); 
+  let alert = document.querySelector("#firstNameErrorMsg");
+  if(testFirstName) { 
+    alert.innerHTML = "";
+ } else {
+  alert.innerHTML = "Prénom non valide";
+}       
+ });
 
  const submitBtn = document.querySelector("#order"); 
     
@@ -133,24 +163,14 @@ function clearQuantityAndPrice(){
       }; 
 
       console.log(contact);
-        let regExAddress = new RegExp('[a-zA-Z0-9\s\,\\-]*', 'g');
-        let regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
-        let regExNames = new RegExp('^[a-zA-Z\é\è\ê\-]{2,30}', 'g');
-        let testNames = regExNames.test(firstName && lastName && city); 
-        let testAddress = regExAddress.test(address);
-        let testEmail = regExEmail.test(email);
-        
+      
+    
         let productsIds = []; 
          for (let i = 0; i < cartInLs.length ; i++){
           productsIds.push(cartInLs[i].id); 
           console.log(productsIds);
          }
 
-        if (testNames && testAddress && testEmail === false)
-        {
-          console.log("ne pas envoyer le formulaire")
-        } else
-        {
           const sendToBackEnd = {
             contact, 
             products: productsIds
@@ -178,9 +198,10 @@ function clearQuantityAndPrice(){
                    console.log(e);
                  }
                })
+               
           
-        };
+        }
 
-      } 
+      
       
     ) 
