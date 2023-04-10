@@ -102,39 +102,15 @@ function clearQuantityAndPrice(){
 
   // validation du formulaire
 
-
- let lastName = document.querySelector("#lastName").value;
- console.log(lastName);
- let address = document.querySelector("#address").value;
- console.log(address);
- let city = document.querySelector("#city").value;
- console.log(city); 
- let email = document.querySelector("#email").value;
- console.log(email); 
-
- let regExAddress = new RegExp('[a-zA-Z0-9\s\,\\-]*', 'g');
- let regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
- 
- let regExLastName = new RegExp('^[a-zA-Z\é\è\ê\-]{2,30}', 'g');
- let regExCity = new RegExp('^[a-zA-Z\é\è\ê\-]{2,30}', 'g');
- 
- 
- let testLastName = regExLastName.test(lastName);  
- let testCity = regExCity.test(city);
- let testAddress = regExAddress.test(address);
- let testEmail = regExEmail.test(email);
-
  let userForm = document.querySelector(".cart__order__form");
- console.log(userForm);
 
- let firstName = document.querySelector("#firstName");
- console.log(firstName);
+var firstName = document.querySelector("#firstName");
+ var regExFirstName = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g'); 
 
  userForm.firstName.addEventListener("change", event => {
   event.preventDefault();
-  let regExFirstName = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g');
-  let nameValue = firstName.value;
-  let testFirstName = regExFirstName.test(nameValue); 
+  let valueFirstName = firstName.value;
+  let testFirstName = regExFirstName.test(valueFirstName); 
   let alert = document.querySelector("#firstNameErrorMsg");
   if(testFirstName) { 
     alert.innerHTML = "";
@@ -143,16 +119,99 @@ function clearQuantityAndPrice(){
 }       
  });
 
+
+ var lastName = document.querySelector("#lastName");
+ var regExLastName = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g');
+
+ userForm.lastName.addEventListener("change", event => {
+  event.preventDefault();
+  let testLastName = regExLastName.test(lastName.value); 
+  let alert = document.querySelector("#lastNameErrorMsg");
+  if(testLastName) { 
+    alert.innerHTML = "";
+ } else {
+  alert.innerHTML = "Nom non valide";
+}       
+ }); 
+
+ var address = document.querySelector("#address");
+ var regExAddress = new RegExp('[#.0-9a-zA-ZÀ-ÿ\s,-]{2,60}$','g');
+
+ userForm.address.addEventListener("change", event => {
+  event.preventDefault();
+  let testAddress = regExAddress.test(address.value); 
+  let alert = document.querySelector("#addressErrorMsg");
+  if(testAddress) { 
+    alert.innerHTML = "";
+ } else {
+  alert.innerHTML = "Adresse non valide";
+}       
+ }); 
+
+ var city = document.querySelector("#city");
+ var regExCity = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g');
+ 
+ userForm.city.addEventListener("change", event => {
+  event.preventDefault();
+  let cityValue = city.value;
+  let testCity = regExCity.test(cityValue); 
+  let alert = document.querySelector("#cityErrorMsg");
+  if(testCity) { 
+    alert.innerHTML = "";
+ } else {
+  alert.innerHTML = "Ville non valide";
+}       
+ });  
+
+var email = document.querySelector("#email");
+var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
+ 
+ userForm.email.addEventListener("change", event => {
+  event.preventDefault();
+ let emailValue = email.value;
+ let testEmail = regExEmail.test(emailValue);
+  let alert = document.querySelector("#emailErrorMsg");
+  if(testEmail) { 
+    alert.innerHTML = "";
+ } else {
+  alert.innerHTML = "Adresse mail non valide";
+}       
+ });
+
  const submitBtn = document.querySelector("#order"); 
     
+
      submitBtn.addEventListener("click", event => {
       event.preventDefault(); 
-     
-      const firstName = firstNameInput.value; 
-      const lastName = lastNameInput.value; 
-      const address = addressInput.value; 
-      const city = cityInput.value; 
-      const email = emailInput.value; 
+      
+      let regExFirstName = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g');
+      let regExLastName =  new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g');
+      let regExAddress = new RegExp('[#.0-9a-zA-ZÀ-ÿ\s,-]{2,60}$','g');
+      let regExCity = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g');
+      let regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
+      
+      let testFirstName = regExFirstName.test(firstName.value);
+      let testLastName = regExLastName.test(lastName.value);
+      let testAddress = regExAddress.test(address.value);
+      let testCity = regExCity.test(city.value);
+      let testEmail = regExEmail.test(email.value); 
+      console.log(firstName.value);
+      console.log(testFirstName);
+      console.log(lastName.value);
+      console.log(testLastName);
+      console.log(address.value);
+      console.log(testAddress);
+      console.log(city.value);
+      console.log(testCity);
+      console.log(email.value);
+      console.log(testEmail);
+ 
+      if(testFirstName &&
+       testLastName && 
+       testAddress && 
+       testCity && 
+       testEmail 
+       ){
      
       const contact = {
         firstName: firstName, 
@@ -184,7 +243,6 @@ function clearQuantityAndPrice(){
               "Content-Type": "application/json" 
             }, 
             };
-            
             const postRequest = fetch("http://localhost:3000/api/products/order",options);
                postRequest.then(async(response)=>{
                  try{
@@ -197,11 +255,10 @@ function clearQuantityAndPrice(){
                  }catch(e){
                    console.log(e);
                  }
-               })
-               
+               })}else{
+                console.log("error");
+               }
+              
           
         }
-
-      
-      
-    ) 
+     ) 
