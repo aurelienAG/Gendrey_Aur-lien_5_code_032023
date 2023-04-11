@@ -1,7 +1,10 @@
-let url = new URLSearchParams(document.location.search); 
+//Utilisation d'URLSearchParams pour manipuler les paramètres de l'url courante
+let url = new URLSearchParams(document.location.search);
+// On récupère le paramètre correspondant à l'id du produit à afficher   
 let id = url.get("id"); 
 console.log(id);
 
+// Appel à l'API en spécifiant l'id du produit qui nous intéresse
 const getProduct = fetch(`http://localhost:3000/api/products/${id}`); 
 getProduct
 .then(async response =>{
@@ -39,8 +42,7 @@ const createOptionElement = color => {
 displayOption();
 
 
-
-// Local Storage
+//Fonction contenant les données du produits sélectionné
 function product(){
     let quantity = parseInt(document.querySelector("#quantity").value); 
     
@@ -56,9 +58,11 @@ function product(){
     
     };
     
+    //Fonction qui sauvegarde les articles du panier dans le local storage 
     function saveLocalStorage(cart){
         localStorage.setItem("cart", JSON.stringify(cart));
     };
+    
     
     function getCart(){
      let cart = localStorage.getItem("cart"); 
@@ -69,11 +73,11 @@ function product(){
      }
     };  
 
-    
+ //Fonction qui ajoute les produits au panier   
     function addToCart(){ 
-       
         let productSelected = product();
         let alert = document.querySelector("#alert"); 
+        //On ajoute le produit au panier seulement si la quantité est valide
         if(quantity.value > 0 && quantity.value <= 100){
          let cart = getCart(); 
          alert.innerText = `Votre produit a bien été ajouté au panier !`;
@@ -89,13 +93,13 @@ function product(){
          
   
 
-//bouton d'ajout au panier
+//Gestion du bouton d'ajout au panier
 let btnAdd = document.querySelector("#addToCart"); 
-
 
 btnAdd.addEventListener('click', (event) =>{
     event.preventDefault();
-    
+
+//On invoque la fonction d'ajout au panier au clic du bouton
 addToCart();
 });
 }); 

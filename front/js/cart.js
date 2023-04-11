@@ -111,12 +111,14 @@ function clearQuantityAndPrice(){
   });
   }; 
 
-  // validation du formulaire
 
- let userForm = document.querySelector(".cart__order__form");
+                    //***Gestion du formulaire ***/ 
+  
+// Gestion des erreurs de saisie du formulaire
+let userForm = document.querySelector(".cart__order__form");
 
 var firstName = document.querySelector("#firstName");
- var regExFirstName = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g'); 
+var regExFirstName = new RegExp('^[A-Za-z\é\è\ê\-]{2,20}$','g'); 
 
  userForm.firstName.addEventListener("change", event => {
   event.preventDefault();
@@ -189,9 +191,8 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
 }       
  });
 
+//**Envoi du formulaire */
  const submitBtn = document.querySelector("#order"); 
-    
-
      submitBtn.addEventListener("click", event => {
       event.preventDefault(); 
       
@@ -207,7 +208,7 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
       let testCity = regExCity.test(city.value);
       let testEmail = regExEmail.test(email.value); 
       
- 
+// Le formulaire est envoyé seulement si les champs du formulaires correspondent à leur regex respectives//
       if(testFirstName &&
        testLastName && 
        testAddress && 
@@ -215,6 +216,7 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
        testEmail 
        ){
      
+        //création de l'objet contac contenant les données du formulaire
       const contact = {
         firstName: firstName, 
         lastName: lastName, 
@@ -225,13 +227,14 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
 
       console.log(contact);
       
-    
+    //création du tableau contenant les id des articles du panier
         let productsIds = []; 
          for (let i = 0; i < cartInLs.length ; i++){
           productsIds.push(cartInLs[i].id); 
           console.log(productsIds);
          }
-
+    
+          //Création de l'objet à envoyer au back-end
           const sendToBackEnd = {
             contact, 
             products: productsIds
@@ -244,7 +247,8 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
             headers: {
               "Content-Type": "application/json" 
             }, 
-            };
+            }; 
+            //Utilisation de fetch pour envoyer les données du formulaire au back-end
             const postRequest = fetch("http://localhost:3000/api/products/order",options);
                postRequest.then(async(response)=>{
                  try{
@@ -257,7 +261,8 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
                  }catch(e){
                    console.log(e);
                  }
-               })}else{
+               })}else{ 
+                //Si mauvaise saisie des champs, affichage d'un message d'erreur
                 let alertValidForm = document.querySelector("#alertValidForm"); 
                 alertValidForm.innerText = `Les données du formulaire ne sont pas valides`;
                }
