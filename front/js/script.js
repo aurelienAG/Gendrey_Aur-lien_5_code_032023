@@ -26,8 +26,7 @@ getItems
    cardContainer.innerHTML = mapping;
 })
 
-.catch(err => console.log(err)); 
+.catch( cardContainer.innerHTML = `<h1> Serveur hors service :( </h1>
+<h2>Nous vous prions de réessayer ultérieurement</h2>`); 
 
-if (err){
-    cardContainer.innerHTML = `<h3> Pb de serveur :( </h3>`;
-}; 
+
