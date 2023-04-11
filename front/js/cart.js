@@ -19,7 +19,9 @@ for (let i = 0 ; i < cartInLs.length ; i++){
       <div class="cart__item__content__settings__quantity">
         <p>Qté : </p>
         <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cartInLs[i].quantity}">
-      </div>
+        
+        </div>
+        <p class="alertQuantity" style = "color: yellow;"></p>
       <div class="cart__item__content__settings__delete">
         <p class="deleteItem">Supprimer</p>
       </div>
@@ -33,21 +35,30 @@ const totalPrice = document.querySelector("#totalPrice");
 const totalQuantity = document.querySelector("#totalQuantity")
 let prices = document.getElementsByClassName("unitPrice"); 
 let quantities = document.getElementsByClassName("itemQuantity"); 
-
-  for ( let i = 0; i < quantities.length; i++){
+let alertsQuantities = document.getElementsByClassName("alertQuantity");
+console.log(alertsQuantities);
+  for ( let i = 0; i < quantities.length && alertsQuantities.length; i++){
     let qty = quantities[i]; 
-    
+    let errMessageQuantity = alertsQuantities[i];   
    
     qty.addEventListener("change", event => {
     event.preventDefault(); 
+    if (qty.value >=1 && qty.value <=100){
       let theLs =  cartInLs;  
       let storageValue = cartInLs[i].quantity; 
       let newValue = parseInt(qty.value);
       newValue != storageValue ?  theLs[i].quantity = newValue : console.log("foo");
       localStorage.setItem("cart", JSON.stringify(theLs));
  sumTotal(); 
+    }else {
+    
+      qty.value > 100 ? qty.value = 100 : console.log(qty.value);
+      qty.value  < 1 ? qty.value = parseInt(qty.value) + 1 : console.log(qty.value);
+      errMessageQuantity.innerText = `La valeur minimum doit être de 1 et la valeur maximum de 100`;
+     }
+     
 }) 
-}
+};
 
 function sumTotal(){ 
 
@@ -115,7 +126,7 @@ var firstName = document.querySelector("#firstName");
   if(testFirstName) { 
     alert.innerHTML = "";
  } else {
-  alert.innerHTML = "Prénom non valide";
+  alert.innerHTML = "Prénom non valide, le champs ne doit contenir ni chiffre ni caractère spécial";
 }       
  });
 
@@ -130,7 +141,7 @@ var firstName = document.querySelector("#firstName");
   if(testLastName) { 
     alert.innerHTML = "";
  } else {
-  alert.innerHTML = "Nom non valide";
+  alert.innerHTML = "Nom non valide, le champs ne doit contenir ni chiffre ni caractère spécial";
 }       
  }); 
 
@@ -144,7 +155,7 @@ var firstName = document.querySelector("#firstName");
   if(testAddress) { 
     alert.innerHTML = "";
  } else {
-  alert.innerHTML = "Adresse non valide";
+  alert.innerHTML = "Adresse non valide, veuillez vous référer à l'exemple ci-dessus";
 }       
  }); 
 
@@ -159,7 +170,7 @@ var firstName = document.querySelector("#firstName");
   if(testCity) { 
     alert.innerHTML = "";
  } else {
-  alert.innerHTML = "Ville non valide";
+  alert.innerHTML = "Ville non valide, le champs ne doit contenir ni chiffre ni caractère spécial";
 }       
  });  
 
@@ -174,7 +185,7 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
   if(testEmail) { 
     alert.innerHTML = "";
  } else {
-  alert.innerHTML = "Adresse mail non valide";
+  alert.innerHTML = "Adresse mail non valide, veuillez vous référer à l'exemple contenu dans le champs";
 }       
  });
 
@@ -195,16 +206,7 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
       let testAddress = regExAddress.test(address.value);
       let testCity = regExCity.test(city.value);
       let testEmail = regExEmail.test(email.value); 
-      console.log(firstName.value);
-      console.log(testFirstName);
-      console.log(lastName.value);
-      console.log(testLastName);
-      console.log(address.value);
-      console.log(testAddress);
-      console.log(city.value);
-      console.log(testCity);
-      console.log(email.value);
-      console.log(testEmail);
+      
  
       if(testFirstName &&
        testLastName && 
@@ -256,7 +258,8 @@ var regExEmail = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,
                    console.log(e);
                  }
                })}else{
-                console.log("error");
+                let alertValidForm = document.querySelector("#alertValidForm"); 
+                alertValidForm.innerText = `Les données du formulaire ne sont pas valides`;
                }
               
           

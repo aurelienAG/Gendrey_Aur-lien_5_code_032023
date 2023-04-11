@@ -84,7 +84,7 @@ function product(){
          : cart.push(productSelected);       
          saveLocalStorage(cart)
         }else { 
-            alert.innerText = `Veuillez renseigner une quantité comprise entre 1 et 100 pour chaque article`
+            alert.innerText = `Votre produit n'a pas été ajouté au panier :( La valeur de la quantité doit être au minimum de 1 et au maximum de 100`
         }; }  
          
   
