@@ -72,7 +72,12 @@
 .item__content__settings__color select:focus,
 .item__content__settings__quantity input:focus {
 	outline: none;
+} 
+
+#alert {
+	color: yellow;
 }
+
 .item__content__addButton {
 	display: flex;
 	justify-content: center;
