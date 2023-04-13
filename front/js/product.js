@@ -15,30 +15,36 @@ getProduct
  const displayImage = document.querySelector(".item__img");
  const displayPrice = document.querySelector("#price");  
  const displayDescription = document.querySelector("#description"); 
- displayTitle.innerHTML = currentProduct.name;
- displayName.innerHTML = currentProduct.name;
+ displayTitle.innerText = currentProduct.name;
+ displayName.innerText = currentProduct.name;
  displayImage.innerHTML = `<img src = "${currentProduct.imageUrl}"></img>`;
- displayPrice.innerHTML = currentProduct.price; 
- displayDescription.innerHTML = currentProduct.description;
+ displayPrice.innerText = currentProduct.price; 
+ displayDescription.innerText = currentProduct.description;
  
  //Affichage des options de personnalisation 
+
  const selectOption = document.querySelector("#colors");
  let optionArray = currentProduct.colors; 
+ console.log(optionArray);
 
 const displayOption = () => {
     const optionsNode = optionArray.map(color => {
         return createOptionElement(color);
-        
+       
     }); 
     selectOption.innerHTML = ""; 
     selectOption.append(...optionsNode);
+    console.log(optionsNode);
+    console.log(...optionsNode);
 };
+
 
 const createOptionElement = color => {
     const option = document.createElement("option"); 
     option.innerHTML = color; 
     return option; 
 }; 
+
 displayOption();
 
 
@@ -51,8 +57,7 @@ function product(){
         image: currentProduct.imageUrl, 
         name: currentProduct.name,
         option: selectOption.value,
-        quantity: quantity,
-        unitPrice: currentProduct.price
+        quantity: quantity
     }; 
     return item
     
@@ -63,21 +68,24 @@ function product(){
         localStorage.setItem("cart", JSON.stringify(cart));
     };
     
-    
+    //Fonction qui indique l'état du panier
     function getCart(){
      let cart = localStorage.getItem("cart"); 
+     //Si le local storage est vide, le panier est un tableau vide
      if (cart === null){
         return [];
-     }else {
+     }
+     //Si le local storage comporte au moins un article, le panier est un tableau d'objet
+     else { 
        return JSON.parse(cart);
      }
     };  
-
+  
  //Fonction qui ajoute les produits au panier   
     function addToCart(){ 
         let productSelected = product();
         let alert = document.querySelector("#alert"); 
-        //On ajoute le produit au panier seulement si la quantité est valide
+        //On ajoute le produit au panier seulement si la quantité est supérieure à 0 et inférieure ou égale à 100
         if(quantity.value > 0 && quantity.value <= 100){
          let cart = getCart(); 
          alert.innerText = `Votre produit a bien été ajouté au panier !`;
@@ -88,18 +96,16 @@ function product(){
          : cart.push(productSelected);       
          saveLocalStorage(cart)
         }else { 
-            alert.innerText = `Votre produit n'a pas été ajouté au panier :( La valeur de la quantité doit être au minimum de 1 et au maximum de 100`
-        }; }  
-         
-  
+            alert.innerHTML = `Votre produit n'a pas été ajouté au panier :( </br>La quantité doit avoir une valeur minimale de 1 ou une valeur maximale de 100`
+        }; 
+    }  
 
 //Gestion du bouton d'ajout au panier
 let btnAdd = document.querySelector("#addToCart"); 
 
 btnAdd.addEventListener('click', (event) =>{
     event.preventDefault();
-
-//On invoque la fonction d'ajout au panier au clic du bouton
+//Lorsqu'on clique sur le bouton la fonction d'ajout au panier est invoquée
 addToCart();
 });
 }); 
